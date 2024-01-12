@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
 from backend.schemas.blog import ShowBlog, CreateBlog, UpdateBlog
-from backend.db.repository.blog import create_new_blog, retreive_blog, list_blogs, update_blog
+from backend.db.repository.blog import create_new_blog, retreive_blog, list_blogs, update_blog, delete_blog
 
 from typing import List
 
@@ -31,11 +31,20 @@ async def get_all_blogs(db: Session = Depends(get_db)):
 
 
 @router.put("/blog/{id}", response_model=ShowBlog)
-def update_a_blog(id: int, blog: UpdateBlog, db: Session = Depends(get_db)):
+async def update_a_blog(id: int, blog: UpdateBlog, db: Session = Depends(get_db)):
     blog = update_blog(id=id, blog=blog, db=db, author_id=1)
     if not blog:
         raise HTTPException(detail=f"Blog with this id: {id} does not exist")
     return blog
+
+
+@router.delete("/delete/{id}")
+async def delete_a_blog(id: int, db: Session = Depends(get_db)):
+    message = delete_blog(id=id, author_id=1, db=db)
+    if message.get("error"):
+        raise HTTPException(detail=message.get("error"), status_code=status.HTTP_400_BAD_REQUEST)
+    return {'msg': f"successfully deleted blog with id: {id}"}
+
 
 
 
