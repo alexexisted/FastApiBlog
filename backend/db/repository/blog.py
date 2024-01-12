@@ -30,3 +30,15 @@ def update_blog(id: int, blog: UpdateBlog, author_id: int, db: Session):
     db.add(blog_in_db)
     db.commit()
     return blog_in_db
+
+
+def delete_blog(id: int, author_id: int, db: Session):
+    blog_in_db = db.query(Blog).filter(Blog.id == id)
+    #we are working with the reference of the blog object and deleting it
+    #because the method .delete() does not defined in this blog object in db
+    if not blog_in_db.first():
+        return {"error":f"Could not find blog with id {id}"}
+    blog_in_db.delete()
+    db.commit()
+    return {"msg":f"deleted blog with id {id}"}
+
