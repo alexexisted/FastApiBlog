@@ -18,7 +18,7 @@ class CreateBlog(BaseModel):
 class ShowBlog(BaseModel):
     title: str
     content: Optional[str]
-    created_at: datetime    #need to fix datetime to input only date {year, month, day}
+    created_at: datetime    # (upd fixed)
 
     class Config():
         from_attributes = True
