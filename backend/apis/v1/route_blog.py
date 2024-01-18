@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
 from backend.schemas.blog import ShowBlog, CreateBlog, UpdateBlog
-from backend.db.repository.blog import create_new_blog, retreive_blog, list_blogs, update_blog, delete_blog
+from backend.db.repository.blog import create_new_blog, retrieve_blog, list_blogs, update_blog, delete_blog
 from backend.db.models.user import User
 from backend.apis.v1.route_login import get_current_user
 from typing import List
@@ -19,7 +19,7 @@ async def create_blog(blog: CreateBlog, db: Session = Depends(get_db)):
 
 @router.get("/blog/{id}", response_model=ShowBlog)
 async def get_blog(id: int, db: Session = Depends(get_db)):
-    blog = retreive_blog(id=id, db=db)
+    blog = retrieve_blog(id=id, db=db)
     if not blog:
         raise HTTPException(detail=f"Blog with id {id} does not exist")
     return blog
