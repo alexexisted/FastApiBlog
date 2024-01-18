@@ -24,3 +24,6 @@ def blog_detail(request: Request, id: int, db: Session = Depends(get_db)):
     )
 
 
+
+
+
